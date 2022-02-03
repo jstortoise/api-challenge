@@ -102,9 +102,9 @@ User.prototype.generateAccessToken = async function () {
   return accessToken;
 };
 /**
- * If a user is an admin, find and return all roles
+ * If a user is an admin, find by userId and return user
  *
- * @param {String} userId - Sequelize user instance
+ * @param {Number} userId - User ID
  * @returns {Object}
  */
  User.prototype.findOneByUserId = async function (userId) {
