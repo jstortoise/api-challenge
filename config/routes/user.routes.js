@@ -21,4 +21,24 @@ module.exports = [
       }
     },
   },
+  // Read user by userId
+  {
+    method: "GET",
+    path: "/users/{userId}",
+    config: {
+      description: "Read a user by userId",
+      tags: ["Users"],
+    },
+    handler: async (request, h) => {
+      try {
+        const { user } = request.auth.credentials;
+        const { userId } = request.params;
+        const res = await user.findOneByUserId(userId);
+        console.log('Ret', res);
+        return routeUtils.replyWith.found(res, h);
+      } catch (e) {
+        return routeUtils.handleErr(e, h);
+      }
+    }
+  }
 ];

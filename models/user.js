@@ -101,6 +101,27 @@ User.prototype.generateAccessToken = async function () {
 
   return accessToken;
 };
+/**
+ * If a user is an admin, find and return all roles
+ *
+ * @param {String} userId - Sequelize user instance
+ * @returns {Object}
+ */
+ User.prototype.findOneByUserId = async function (userId) {
+  const user = this;
+  // Check that the user is an admin
+  const adminRole = await sequelize.models.UserRole.findOne({
+    where: { id: user.id, roleId: 1 },
+  });
+
+  // If not an admin, reject the request
+  if (!adminRole) throw new Error("Unauthorized");
+
+  // Find and return user information
+  const retUser = await sequelize.models.User.findOne({ where: { id: userId } });
+
+  return retUser.get();
+};
 
 User.restrictedAttrs = ["id", "tokens", "updatedAt"];
 
